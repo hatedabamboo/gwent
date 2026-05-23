@@ -79,6 +79,7 @@ class Card {
 
 	// Animates an ability effect
 	async animate(name, bFade = true, bExpand = true) {
+		sfx._play(name);
 		if (name === "scorch") {
 			return await this.scorch(name);
 		}

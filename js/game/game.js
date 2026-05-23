@@ -61,6 +61,7 @@ class Game {
 
 	// Sets initializes player abilities, player hands and redraw
 	async startGame() {
+		sfx._play('game_start');
 		ui.toggleMusic_elem.classList.remove("music-customization");
 		this.initPlayers(player_me, player_op);
 		await Promise.all([...Array(10).keys()].map( async () => {
@@ -191,8 +192,10 @@ class Game {
 			endScreen.getElementsByTagName("p")[0].classList.remove("hide");
 			endScreen.children[0].classList.add("end-draw");
 		} else if (player_op.health === 0){
+			sfx._play('game_win');
 			endScreen.children[0].classList.add("end-win");
 		} else {
+			sfx._play('game_lose');
 			endScreen.children[0].classList.add("end-lose");
 		}
 

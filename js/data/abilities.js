@@ -166,7 +166,7 @@ var ability_dict = {
 		},
 		weight: () => 50
 	},
-	avenger_kambi: {
+avenger_kambi: {
 		name: "Avenger",
 		description: "When this card is removed from the battlefield, it summons a powerful new Unit Card to take its place. ",
 		removed: async card => {

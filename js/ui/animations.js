@@ -25,6 +25,8 @@ async function translateTo(card, container_source, container_dest){
 	}
 	if (container_source instanceof Row && container_dest === player_me.hand)
 		y *= 7/8;
+	if (container_dest instanceof Row)
+		sfx.cardPlay(card);
 	await translate(elem, x, y);
 
 	// Returns true if the element is visible in the viewport

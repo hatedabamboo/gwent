@@ -1,5 +1,6 @@
 "use strict"
 
+var sfx = new SFX();
 var ui = new UI();
 var board = new Board();
 var weather = new Weather();

@@ -227,8 +227,10 @@ class Deck extends CardContainer {
 	async draw(hand){
 		if (hand === player_op.hand)
 			hand.addCard(this.removeCard(0));
-		else
+		else {
+			sfx._play('draw');
 			await board.toHand(this.cards[0], this);
+		}
 	}
 
 	// Draws a card and sends it to the container before adding a card from the container back to the deck.
@@ -504,10 +506,12 @@ class Weather extends CardContainer {
 		super.addCard(card);
 		card.elem.classList.add("noclick");
 		if (card.name === "Clear Weather"){
+			sfx._play('clear');
 			// TODO Sunlight animation
 			await sleep(500);
 			this.clearWeather();
 		} else {
+			sfx._play(card.abilities[0]);
 			this.changeWeather(card, x => ++this.types[x].count === 1, (r,t) => r.addOverlay(t.name));
 			for (let i=this.cards.length-2; i>=0; --i) {
 				if (card.name === this.cards[i].name) {

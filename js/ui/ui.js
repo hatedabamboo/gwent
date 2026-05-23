@@ -8,13 +8,26 @@ class UI {
 		this.preview = document.getElementsByClassName("card-preview")[0];
 		this.previewCard = null;
 		this.lastRow = null;
-		document.getElementById("pass-button").addEventListener("click", () => player_me.passRound(), false);
+		document.getElementById("pass-button").addEventListener("click", () => { player_me.passRound(); sfx.pass(); }, false);
 		document.getElementById("click-background").addEventListener("click", () => ui.cancel(), false);
 		this.youtube = null;
 		this.ytActive = false;
 		this.musicEnabled = true;
 		this.toggleMusic_elem = document.getElementById("toggle-music");
 		this.toggleMusic_elem.addEventListener("click", () => this.toggleMusic(), false);
+
+		this.notificationsEnabled = true;
+		this.toggleNotif_elem = document.getElementById("toggle-notifications");
+		this.toggleNotif_elem.addEventListener("click", () => this.toggleNotifications(), false);
+
+		this.toggleSFX_elem = document.getElementById("toggle-sfx");
+		this.toggleSFX_elem.addEventListener("click", () => this.toggleSFX(), false);
+
+		// Card hover SFX via event delegation
+		document.querySelector("main").addEventListener("mouseover", e => {
+			if (e.target.closest(".card"))
+				sfx.cardHover();
+		}, false);
 	}
 
 	// Enables or disables client interration
@@ -44,6 +57,18 @@ class UI {
 					clearInterval(timer);
 			}, 500);
 		}
+	}
+
+	// Called when client toggles notifications
+	toggleNotifications(){
+		this.notificationsEnabled = !this.notificationsEnabled;
+		this.toggleNotif_elem.classList.toggle("fade", !this.notificationsEnabled);
+	}
+
+	// Called when client toggles sound effects
+	toggleSFX(){
+		const enabled = sfx.toggle();
+		this.toggleSFX_elem.classList.toggle("fade", !enabled);
 	}
 
 	// Called when client toggles the music
@@ -172,6 +197,14 @@ class UI {
 
 	// Displayed a timed notification to the client
 	async notification(name, duration){
+		if      (name === 'me-turn')    sfx.turn('me');
+		else if (name === 'op-turn')    sfx.turn('op');
+		else if (name === 'round-start') sfx._play('round1_start');
+		else if (name === 'win-round')   sfx._play('round_win');
+		else if (name === 'lose-round')  sfx._play('round_lose');
+		else if (name === 'me-pass' || name === 'op-pass') sfx._play('pass');
+
+		if (!this.notificationsEnabled) return;
 		if (!duration)
 			duration = 1200;
 		duration = Math.max(400, duration);

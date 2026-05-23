@@ -31,7 +31,7 @@ function smallURL(name, ext="jpg"){
 	return imgURL("sm/" + name, ext);
 }
 function imgURL(path, ext) {
-	return "url('img/" + path + "." + ext + "')";
+	return "url('assets/img/" + path + "." + ext + "')";
 }
 
 // Returns true if n is an Number
