@@ -11,13 +11,12 @@ html,body
     margin: 0px;
     padding: 0px;
     overflow-x: visible;
-	scrollbar-width: none; /* disable srcrollbar for firefox */
+	scrollbar-width: none; /* disable scrollbar for firefox */
 }
 
 /* remove spacing between html elements */
 body {
 	font-size: 0px;
-	/*font-family: Impact;*/
 	font-family:Arial Narrow, sans-serif;
 	color: goldenrod;
 	background-color: black;
@@ -37,9 +36,9 @@ main {
 	background-repeat: no-repeat;
 }
 
-/* makes text seleciton and highlighting invisible */
-::selection { background: transparent; }		/* WebKit/Blink Browsers */
-::-moz-selection { background: transparent; }	/* Gecko Browsers */
+/* makes text selection and highlighting invisible */
+::selection { background: transparent; }
+::-moz-selection { background: transparent; }
 
 ::-webkit-scrollbar {
   width: 1.5vw;
@@ -58,6 +57,13 @@ html {
 	scrollbar-color: #5559 #131313; /* mozilla */
 }
 
+/* -------- ultrawide / 21:9 support -------- */
+@media (min-aspect-ratio: 16/9) {
+	body {
+		overflow: hidden;
+	}
+}
+
 #click-background {
 	position: fixed;
 	width: 100%;
@@ -71,8 +77,6 @@ html {
 	width: 4.45vw;
 	top:-7vw;
 	left: 33vw;
-	
-	border: 1px solid blue;
 }
 
 #hand-op .card { position : absolute; }
@@ -83,24 +87,26 @@ html {
 	position: fixed;
 	height: 10px;
 	width: 10px;
-	display: hidden;
+	display: none;
 	z-index: -100;
 }
 
 #toggle-music {
-	position: absolute;
-    top: 45.6vw;
-    left: 26vw;
-    width: 2vw;
-    height: 3vw;
-    font-size: 3vw;
+	position: fixed;
+	bottom: 1vh;
+	left: 1vw;
+	width: 2vw;
+	height: 3vw;
+	font-size: 3vw;
 	color: goldenrod;
     text-shadow: 0 0 2vw black;
 	z-index: 86;
 }
-.music-customization { 
-	transform: translate(22.5vw, -0.5vw);
-}	
+
+.music-customization {
+	left: 48vw;
+	bottom: 1vh;
+}
 
 /* ----------- notification bar ------------------ */
 
@@ -113,7 +119,7 @@ html {
 	z-index: 100;
 }
 
-#notification-bar > div { 
+#notification-bar > div {
 	width: 22.1%;
 	height: 207.25%;
 	top: -66.6%;
@@ -135,55 +141,25 @@ html {
 	font-weight:bold;
 	display: flex;
 	align-items: center;
+	/* text comes from JS via data-notif-text attribute */
+	content: attr(data-notif-text);
 }
 
-#notif-me-first::after { content:"You will go first"; }
-#notif-op-first::after { content:"Your opponent will go first"; }
-
-#notif-me-coin { background-image: url('img/icons/notif_me_coin.png'); }
-#notif-me-coin::after { content:"You will go first"; }
-
-#notif-op-coin { background-image: url('img/icons/notif_op_coin.png'); }
-#notif-op-coin::after { content:"Your opponent will go first"; }
-
+#notif-me-coin  { background-image: url('img/icons/notif_me_coin.png');     }
+#notif-op-coin  { background-image: url('img/icons/notif_op_coin.png');     }
 #notif-round-start { background-image: url('img/icons/notif_round_start.png'); }
-#notif-round-start::after { content:"Round Start"; }
-
-#notif-me-pass { background-image: url('img/icons/notif_round_passed.png'); }
-#notif-me-pass::after { content:"Round passed"; }
-
-#notif-op-pass { background-image: url('img/icons/notif_round_passed.png'); }
-#notif-op-pass::after { content:"Your opponent has passed"; }
-
-#notif-win-round { background-image: url('img/icons/notif_win_round.png'); } 
-#notif-win-round::after { content:"You won the round!"; }
-
+#notif-me-pass  { background-image: url('img/icons/notif_round_passed.png'); }
+#notif-op-pass  { background-image: url('img/icons/notif_round_passed.png'); }
+#notif-win-round  { background-image: url('img/icons/notif_win_round.png'); }
 #notif-lose-round { background-image: url('img/icons/notif_lose_round.png'); }
-#notif-lose-round::after { content:"Your opponent won the round"; }
-
 #notif-draw-round { background-image: url('img/icons/notif_draw_round.png'); }
-#notif-draw-round::after {content:"The round ended in a draw"; }
-
-#notif-me-turn { background-image: url('img/icons/notif_me_turn.png'); } 
-#notif-me-turn::after { content:"Your turn!"; }
-
-#notif-op-turn { background-image: url('img/icons/notif_op_turn.png'); }
-#notif-op-turn::after { content:"Opponent's turn"; }
-
-#notif-north { background-image: url('img/icons/notif_north.png'); }
-#notif-north::after { content:"Northern Realms faction ability triggered - North draws an additional card."; }
-
-#notif-monsters { background-image: url('img/icons/notif_monsters.png'); }
-#notif-monsters::after { content: "Monsters faction ability triggered - one randomly-chosen Monster Unit Card stays on the board"; }
-
+#notif-me-turn  { background-image: url('img/icons/notif_me_turn.png');     }
+#notif-op-turn  { background-image: url('img/icons/notif_op_turn.png');     }
+#notif-north    { background-image: url('img/icons/notif_north.png');       }
+#notif-monsters { background-image: url('img/icons/notif_monsters.png');    }
 #notif-scoiatael { background-image: url('img/icons/notif_scoiatael.png'); }
-#notif-scoiatael::after { content: "Opponent used the Scoia'tael faction perk to go first."; }
-
-#notif-skellige-op{ background-image: url('img/icons/notif_skellige.png'); }
-#notif-skellige-op::after { content: "Opponent Skellige Ability Triggered!"; }
-
-#notif-skellige-me{ background-image: url('img/icons/notif_skellige.png'); }
-#notif-skellige-me::after { content: "Skellige Ability Triggered!"; }
+#notif-skellige-op { background-image: url('img/icons/notif_skellige.png'); }
+#notif-skellige-me { background-image: url('img/icons/notif_skellige.png'); }
 
 /* ------- card preview ------------- */
 
@@ -202,7 +178,7 @@ html {
 	height: 30.4vw;
 	width: 16.1vw;
 	border-radius: 1.5vw;
-	
+
 	background-size: contain;
 	background-position:center;
 }
@@ -233,14 +209,14 @@ html {
 
 .card-description > h1 {
 	font-weight: bold;
-	
+
 	top: 0.5vw;
 	left: 16%;
 	height: 16%;
 	width: 70%;
 	margin-bottom: -2.1vw;
 	text-transform: capitalize;
-	
+
 	font-size: 1vw;
 }
 
@@ -249,7 +225,7 @@ html {
 	left: 5%;
 	width: 90%;
 	height:50%;
-	
+
 	font-size: 0.9vw;
 }
 
@@ -262,27 +238,18 @@ html {
 	z-index:90;
 }
 
-/*
 #carousel > :nth-child(1) {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	border: 1px solid blue;
-	z-index: -1;
-	background-image: url('img/icons/blank.png');
-	background-size: cover;
-}
-*/
+	width:100%;
+	height:100%;
 
-#carousel > :nth-child(1) {
-	wdith:100%;
-	heigth:100%;
-	
-	padding: 11.5% 10%;
-	
+	padding: 11.5% 5%;
+
 	display:flex;
 	align-items: flex-start;
-	justify-content: space-between;
+	justify-content: center;
+	gap: 2.5%;
+
+	background-color: rgba(0, 0, 0, 0.55);
 }
 
 #carousel > :nth-child(1)  > :nth-child(3){
@@ -299,13 +266,14 @@ html {
 #carousel > :nth-child(1)  > :nth-child(4n - 3) {
 	width: 11.3vw;
 	height: 21.3vw;
-	margin: 0 2.75%;
 }
 
 #carousel .card-lg {
 	display:inline-block;
 	background-size:cover;
 	background-position: center;
+	background-color: #111;
+	box-shadow: 0 0 1.5vw rgba(0, 0, 0, 0.9);
 }
 
 #carousel .card-description {
@@ -333,8 +301,6 @@ html {
     height: calc(100vw * 1080 / 1920);
     background-color: rgba(10,10,10,.95);
     z-index: 1000;
-    /* background-image: url(img/boardtest10.png); */
-    /* background-size: contain; */
 }
 
 
@@ -429,7 +395,6 @@ html {
 #end-screen tbody :first-child th {
 	font-size: .9vw;
 	text-align: center;
-	color: darkslategrey;
 	color: rgb(100,100,100);
 }
 
@@ -469,7 +434,7 @@ html {
     box-shadow: 0 0 2vw #6d5210;
 }
 
-#end-screen button ::hover {
+#end-screen button:hover {
 	box-shadow: 0 0 3vw #6d5210;
 }
 
@@ -482,11 +447,8 @@ html {
 	display:inline-block;
 	height: 100%;
 	box-sizing: border-box;
-	overflow-y: hidden;
-	overflow-x: visible;
-	
-	/*new values*/
 	overflow-y: visible;
+	overflow-x: visible;
 	position:absolute;
 	height: calc(100vw * 1080 / 1920);
 }
@@ -494,25 +456,6 @@ html {
 .panel div, .panel section, .panel span{
 	position: relative;
 }
-
-/*
-.panel div, .panel section, .panel span{
-	border: 1px solid yellow;
-	background-color: rgba(0, 100, 100, 0.2);
-	box-sizing: border-box;
-	background-origin: border-box;
-}
-*/
-
-/*
-main { background-image: url('img/boardtest8.png'); }
-*/
-
-/*
-#panel-left { border: 1px solid blue;	background-color: rgba(0,0,100,.2); }
-#panel-mid { border: 1px solid green; background-color: rgba(0, 100, 0, 0.2); }
-#panel-right { border: 1px solid red; background-color: rgba(100, 0, 0, 0.2); }
-*/
 
 #panel-left {
 	width: 26.5%;
@@ -531,7 +474,7 @@ main { background-image: url('img/boardtest8.png'); }
 /* -------------------- left panel ----------------------- */
 
 #weather {
-	top: 41.25%; 
+	top: 41.25%;
 	left: 27.9%;
 	width: 54.9%;
 	height: 12.75%;
@@ -554,8 +497,7 @@ main { background-image: url('img/boardtest8.png'); }
 	height: 100%;
 	width: 63%;
 	margin-bottom: -80%;
-	
-	/* replace it html with center class */
+
 	display:flex;
 	flex-items:center;
 	justify-content:center;
@@ -611,18 +553,17 @@ main { background-image: url('img/boardtest8.png'); }
 }
 
 .profile-img {
-	left: 28.4%;
+	left: 20%;
 	top: 9.6%;
 	width: 21.9%;
 	height: 80%;
 	margin-bottom: -24%;
-	
+
 	background-image: url('img/icons/profile.png');
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
 	border-radius: 100%;
-	/*background-overflow: hidden;*/
 }
 
 .profile-img > div {
@@ -642,7 +583,7 @@ main { background-image: url('img/boardtest8.png'); }
 	height: 43%;
 	left: -10.5%;
 	top: .5%;
-	
+
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -653,23 +594,25 @@ main { background-image: url('img/boardtest8.png'); }
 }
 
 .score-total {
-	top: 25%;
+	top: 31%;
 	left: 94.5%;
 	height: 40%;
 	width: 12%;
-	
-	top:31%;
-	
 	margin-bottom: -12%;
-	
+
 	color: black;
 	text-shadow: 0 0 5px white;
-	font-size: 2.3vw;
+	font-size: 1.6vw;
 	font-weight: bold;
-	
+
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
+}
+
+.score-total > div {
+	width: 100%;
+	height: 100%;
 }
 
 #score-total-me {
@@ -694,7 +637,7 @@ main { background-image: url('img/boardtest8.png'); }
 
 .hand-count {
 	top: 58.5%;
-	left: 53.25%;
+	left: 44%;
 	height: 29.5%;
 	width: 17%;
 	margin-bottom: -9%;
@@ -702,15 +645,13 @@ main { background-image: url('img/boardtest8.png'); }
 	font-size: 1.7vw;
 	font-weight: bold;
 	padding-left: 7%;
-	
-	
-	
+	display: flex;
+	align-items: center;
+
 	background-image: url('img/icons/icon_card_count.png');
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: left;
-	
-	
 }
 
 #hand-count-me {
@@ -730,36 +671,36 @@ main { background-image: url('img/boardtest8.png'); }
 
 #gem2-op {
 	top: 56.25%;
-	left: 70.75%;
+	left: 62%;
 }
 
 #gem1-op{
 	top:56%;
-	left:80%;
+	left:72%;
 }
 
 #gem2-me {
 	top: 14.5%;
-	left: 70.75%;
+	left: 62%;
 }
 
 #gem1-me{
 	top: 14.5%;
-	left: 80%;
+	left: 72%;
 }
 
 .name {
 	left: 53%;
-	top: 6%;
+	top: 8%;
 	width:41.5%;
 	height: 20%;
 	margin-bottom: -6%;
 	overflow: hidden;
 	white-space: nowrap;
-	font-size: 1.1vw;
+	font-size: 1.05vw;
 	font-weight: bold;
-	
-	/*font-family: Arial Narrow, sans-serif;*/
+	display: flex;
+	align-items: center;
 }
 
 #name-me {
@@ -768,16 +709,17 @@ main { background-image: url('img/boardtest8.png'); }
 
 .deck-name {
 	left: 53%;
-	top: 25%;
+	top: 28%;
 	width: 41.5%;
 	height: 20%;
 	margin-bottom: -6%;
 	overflow: hidden;
 	text-transform:capitalize;
-	
+
 	color: tan;
-	font-size: .95vw;
-	/*font-family: Arial Narrow, sans-serif;*/
+	font-size: .9vw;
+	display: flex;
+	align-items: center;
 }
 
 #deck-name-me {
@@ -789,7 +731,7 @@ main { background-image: url('img/boardtest8.png'); }
 	width: 0%;
 	left:90%;
 	top: 87%;
-	
+
 	color: tan;
 	font-size: 1.5vw;
 	font-weight: bold;
@@ -802,16 +744,16 @@ main { background-image: url('img/boardtest8.png'); }
 	left: 63%;
 	width:20%;
 	height: 4%;
-	
+
 	font-size: 2vw;
 	font-weight: bold;
-	
+
 	border: .1vw solid goldenrod;
 	border-radius: .5vw;
 	background-color: rgba(20,20,20,.9);
 }
 
-/* ------------- middle pannel ------------------ */
+/* ------------- middle panel ------------------ */
 
 .field {
 	width: 100%;
@@ -852,13 +794,18 @@ main { background-image: url('img/boardtest8.png'); }
 
 .row-score {
 	width: 5.1%;
-	top:7%;
-	height: 95%;
+	top: 20%;
+	height: 60%;
 	margin-bottom: -12.65%;
 	font-size: 1.8vw;
-	
+
 	color: black;
 	text-shadow: 0 0 5px white;
+}
+
+#field-op .field-row:nth-child(3) .row-score,
+#field-me .field-row:nth-child(3) .row-score {
+	top: 23%;
 }
 
 .row-special {
@@ -870,9 +817,6 @@ main { background-image: url('img/boardtest8.png'); }
 
 .row-cards {
 	height: 100%;
-	width: 80.65%;
-	left: 19.35%;
-
 	left: 20%;
 	width: 79.7%;
 }
@@ -883,9 +827,9 @@ main { background-image: url('img/boardtest8.png'); }
 	left: 5.75%;
 	width: 94.25%;
 	height: 100%;
-	
+
 	pointer-events : none;
-	
+
 	background-size: cover;
 	background-position: bottom;
 	background-repeat: no-repeat;
@@ -908,27 +852,15 @@ main { background-image: url('img/boardtest8.png'); }
 
 .row-selectable:hover {
 	box-shadow: 0 0 .25vw rgba(255,255,0, 1);
-	/*outline: .25vw solid rgba(255,255,0, 0.5);*/
 	box-sizing: border-box;
 }
 
 .card-selectable > .card:hover {
-	/*box-shadow: 0 0 .2vw rgba(255,255,0, 0.5);*/
 	border: .12vw outset goldenrod;
 	border-radius: .3vw;
 	margin-bottom: 1vw;
 	z-index: 1;
 }
-
-/*
-#hand-row > .card {
-	position: relative;
-	position: absolute;
-	
-	height: 100%;
-	width: 9.35%;
-}
-*/
 
 /* ---------------- right panel ------------- */
 
@@ -936,7 +868,7 @@ main { background-image: url('img/boardtest8.png'); }
 	width: 27.6%;
 	height: 13.5%;
 	margin-bottom: -36.25%;
-	
+
 	display:flex;
 	flex-direction:column-reverse;
 	align-items: center;
@@ -971,7 +903,7 @@ main { background-image: url('img/boardtest8.png'); }
 .deck-card {
 	position: relative;
 	display: inline-block;
-	
+
 	height: 6.675vw;
 	width: 4.45vw;
 
@@ -983,12 +915,12 @@ main { background-image: url('img/boardtest8.png'); }
 .deck-counter {
 	position: relative;
 	background-color: rgba(20,20,20, 0.8);
-	
+
 	width: 3vw;
 	height: 2vw;
-	
+
 	z-index: 1;
-	
+
 	color:tan;
 	font-size: 1.3vw;
 }
@@ -1000,7 +932,6 @@ main { background-image: url('img/boardtest8.png'); }
 
 
 .cardpile > .card {
-	/* position: relative; */
 	top: -5%;
 	margin-top: -108.5%;
 }
@@ -1013,6 +944,7 @@ main { background-image: url('img/boardtest8.png'); }
 	height: calc(100vw * 1080 / 1920);
 	background-color: rgba(10,10,10,.95);
 	z-index: 85;
+	pointer-events: auto;
 }
 
 #faction-title {
@@ -1029,11 +961,9 @@ main { background-image: url('img/boardtest8.png'); }
     line-height: 220%;
     text-transform: capitalize;
     padding: 0 3%;
-	
 
-	
 	top: -60%;
-	
+
     background-size: contain;
     background-repeat: no-repeat;
 }
@@ -1055,16 +985,41 @@ main { background-image: url('img/boardtest8.png'); }
 	top: 15%;
 }
 
-#download-deck {
-	left: 55%;
-}
-
 #upload-deck {
-	left: 40%;
+	left: 28%;
 }
 
 #change-faction {
-	left: 47%;
+	left: 44%;
+}
+
+#download-deck {
+	left: 60%;
+}
+
+#sort-controls {
+	position: absolute;
+	top: 19%;
+	left: 8%;
+	font-size: 0.85vw;
+	color: #6a5a3a;
+	user-select: none;
+}
+
+.sort-btn {
+	margin-left: 0.7vw;
+	color: #b09060;
+	cursor: pointer;
+	padding-bottom: 0.1vw;
+}
+
+.sort-btn:hover {
+	color: #d4a84b;
+}
+
+.sort-btn.sort-active {
+	color: goldenrod;
+	border-bottom: 0.1vw solid goldenrod;
 }
 
 .card-array {
@@ -1130,7 +1085,7 @@ main { background-image: url('img/boardtest8.png'); }
 	position: relative;
 	height: 84.5%;
 	margin-top: 24.5%;
-	
+
 	background-size: contain;
 	border-radius: .5vw;
 }
@@ -1157,16 +1112,16 @@ main { background-image: url('img/boardtest8.png'); }
 	padding-left: 2.3vw;
 	margin-left: 3.95vw;
 	margin-bottom: -6.75%;
-	
+
 	background-repeat: no-repeat;
 	background-position: left;
 	background-size: 2.5vw;
 }
 
-#deck-stats > p:nth-child(2) { background-image: url('img/icons/deck_stats_count.png'); }
-#deck-stats > p:nth-child(4) { background-image: url('img/icons/deck_stats_unit.png'); }
-#deck-stats > p:nth-child(6) { background-image: url('img/icons/deck_stats_special.png'); }
-#deck-stats > p:nth-child(8) { background-image: url('img/icons/deck_stats_strength.png'); }
+#deck-stats > p:nth-child(2)  { background-image: url('img/icons/deck_stats_count.png'); }
+#deck-stats > p:nth-child(4)  { background-image: url('img/icons/deck_stats_unit.png'); }
+#deck-stats > p:nth-child(6)  { background-image: url('img/icons/deck_stats_special.png'); }
+#deck-stats > p:nth-child(8)  { background-image: url('img/icons/deck_stats_strength.png'); }
 #deck-stats > p:nth-child(10) { background-image: url('img/icons/deck_stats_hero.png'); }
 
 #start-game {
@@ -1182,7 +1137,7 @@ main { background-image: url('img/boardtest8.png'); }
 	border: 0.1vw ridge rgb(30,30,30);
 }
 
-.card-contianer-title {
+.card-container-title {
 	position: absolute;
 	width: 10%;
 	height: 3%;
@@ -1203,26 +1158,21 @@ main { background-image: url('img/boardtest8.png'); }
 /* ----------- cards ------------------*/
 
 .card {
-	/*height: 100%;
-	width: auto;*/
-	/*width: calc(100% * 775 / 410);*/
-	
 	height: 6.35vw;
 	width: 4.45vw;
-	
+
 	background-size:contain;
 	background-repeat: no-repeat;
-	
+
 	box-shadow: -.1vw -.1vw .5vw rgba(20,20,20, 0.5);
-	
+
 	display: inline-block;
-	
-	/*position: absolute;*/
+
 	position: relative;
-	
+
 	transition: margin-bottom 0.05s, margin-left .25s, margin-right .25s, transform 0.5s;
-	
-	z-index = 1;
+
+	z-index: 1;
 }
 
 .deck-card .card { position : absolute; }
@@ -1239,20 +1189,24 @@ main { background-image: url('img/boardtest8.png'); }
 	width: 70%;
 	height: 50%;
 	margin-bottom: -71%;
-	
+
 	background-position: 0 0;
-	
+
 }
 
 .card > div:nth-child(1) > div {
-	top: 13%;
-	left: 7%;
-	width: 50%;
-	heighth:  50%;
+	position: absolute;
+	top: 10%;
+	left: 5%;
+	width: 55%;
+	height: 50%;
 	font-size: 1vw;
 	font-weight: bold;
 	color: black;
 	text-shadow: 0 0 .1vw white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .hero > div:nth-child(1) > div {
@@ -1260,15 +1214,12 @@ main { background-image: url('img/boardtest8.png'); }
 	text-shadow: 0 0 .1vw black;
 }
 
-
-
 .card > div:nth-child(2) {
 	top: 75%;
 	left: 65%;
 	width: 33%;
 	height: 22%;
 	margin-bottom: -32%;
-	/*border: 1px solid blue;*/
 }
 
 .card > div:nth-child(3){
@@ -1277,9 +1228,8 @@ main { background-image: url('img/boardtest8.png'); }
 	width: 33%;
 	height: 22%;
 	margin-bottom: -32%;
-	
+
 	font-size: 1vw;
-	/*border: 1px solid red;*/
 }
 
 .card > div:nth-child(4) {
@@ -1301,8 +1251,6 @@ main { background-image: url('img/boardtest8.png'); }
 .card-container .card {
 	margin: 0 1px;
 	flex-shrink: 0;
-	/*margin: 0 -10px;*/
-	/*margin: 0 calc((100% - (4.45vw * 14)) / 26);*/
 }
 
 /* ----------- misc ----------------  */
