@@ -218,7 +218,7 @@ class UI {
 		const chars = text.length;
 		const words = text.split(" ").length;
 		duration = Math.round(0.7454878 * Math.max(Math.round((1000/17) * chars), Math.round((60000/300) * words)) + 211.653152) + 1;
-		duration = Math.max(400, duration);
+		duration = Math.max(1200, duration);
 
 		// Notification cache bonus for online play (feature 19)
 		const bonus = playingOnline && duration < 1000 && !cache_notif.includes(name) ? 800 : 0;
