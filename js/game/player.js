@@ -12,6 +12,7 @@ class ControllerAI {
 	async startTurn(player){
 		if (player.opponent().passed && (player.winning ||
 				player.deck.faction === "nilfgaard" && player.total === player.opponent().total) ){
+			nilfgaard_wins_draws = player.deck.faction === "nilfgaard" && player.total === player.opponent().total;
 			await player.passRound();
 			return;
 		}
@@ -465,6 +466,7 @@ class Player {
 		this.passed = false;
 		this.handsize = 10;
 		this.winning = false;
+		this.factionAbilityUses = 0;
 
 		this.enableLeader();
 		this.setPassed(false);

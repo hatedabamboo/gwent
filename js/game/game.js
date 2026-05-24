@@ -160,9 +160,13 @@ class Game {
 
 		if (dif > 0)
 			await ui.notification("win-round", 1200);
-		else if (dif < 0)
+		else if (dif < 0) {
+			if (nilfgaard_wins_draws) {
+				nilfgaard_wins_draws = false;
+				await ui.notification("nilfgaard-wins-draws", 1200);
+			}
 			await ui.notification("lose-round", 1200);
-		else
+		} else
 			await ui.notification("draw-round", 1200);
 
 		if (player_me.health === 0 || player_op.health === 0)
@@ -188,15 +192,37 @@ class Game {
 		}
 
 		endScreen.children[0].className = "";
+		let cond;
 		if (player_op.health <= 0 && player_me.health <= 0) {
 			endScreen.getElementsByTagName("p")[0].classList.remove("hide");
 			endScreen.children[0].classList.add("end-draw");
+			cond = 1;
 		} else if (player_op.health === 0){
 			sfx._play('game_win');
 			endScreen.children[0].classList.add("end-win");
+			cond = 0;
 		} else {
 			sfx._play('game_lose');
 			endScreen.children[0].classList.add("end-lose");
+			cond = 2;
+		}
+
+		// Update statistics (feature 13)
+		series.push(cond);
+		let streaks = [0, 0, 0], run = [0, 0, 0];
+		for (let i = 0; i < series.length; i++) {
+			for (let j = 0; j < 3; j++) {
+				if (series[i] === j) run[j]++;
+				else run[j] = 0;
+				if (run[j] > streaks[j]) streaks[j] = run[j];
+			}
+		}
+		for (let i = 0; i < 3; i++) statistics[i][0] = streaks[i];
+		statistics[cond][1]++;
+		let statsEl = document.getElementById("game-statistics");
+		if (statsEl) {
+			statsEl.children[0].innerHTML = statistics[0][1] + "W / " + statistics[1][1] + "D / " + statistics[2][1] + "L";
+			statsEl.children[1].innerHTML = "Best win streak: " + statistics[0][0];
 		}
 
 		fadeIn(endScreen, 300);

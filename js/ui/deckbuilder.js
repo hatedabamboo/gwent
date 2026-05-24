@@ -138,6 +138,13 @@ class DeckMaker {
 		cards.push(bankID);
 		let cardIndex = cards.length-1;
 		elem.addEventListener("click", () => this.select(cardIndex, isBank), false);
+		elem.addEventListener("contextmenu", async (e) => {
+			e.preventDefault();
+			let container = new CardContainer();
+			container.cards = [new Card(card_data, null)];
+			try { Carousel.curr.cancel(); } catch(err) {}
+			await ui.viewCardsInContainer(container);
+		}, false);
 
 		return bankID;
 	}

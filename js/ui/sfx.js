@@ -4,6 +4,8 @@ class SFX {
 	constructor() {
 		this.enabled = true;
 		this._sources = {};
+		this._lastSound = "";
+		this._lastSoundTime = 0;
 		[
 			'turn_me', 'turn_op', 'ui_card', 'ui_card_bank', 'open', 'draw',
 			'clear', 'fog', 'frost', 'rain',
@@ -17,6 +19,11 @@ class SFX {
 		if (!this.enabled) return;
 		const audio = this._sources[key];
 		if (!audio) return;
+		const now = Date.now();
+		if (this._lastSound === key && now - this._lastSoundTime < 50) return;
+		this._lastSound = key;
+		this._lastSoundTime = now;
+		setTimeout(() => { if (this._lastSound === key) this._lastSound = ""; }, 50);
 		if (audio.currentTime > 0 && !audio.paused && !audio.ended) {
 			audio.pause();
 			audio.currentTime = 0;

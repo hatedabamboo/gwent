@@ -199,19 +199,32 @@ class UI {
 	async notification(name, duration){
 		if      (name === 'me-turn')    sfx.turn('me');
 		else if (name === 'op-turn')    sfx.turn('op');
+		else if (name === 'op-leader')  sfx.turn('op');
+		else if (name === 'nilfgaard-wins-draws') sfx.turn('op');
 		else if (name === 'round-start') sfx._play('round1_start');
 		else if (name === 'win-round')   sfx._play('round_win');
 		else if (name === 'lose-round')  sfx._play('round_lose');
 		else if (name === 'me-pass' || name === 'op-pass') sfx._play('pass');
 
 		if (!this.notificationsEnabled) return;
-		if (!duration)
-			duration = 1200;
-		duration = Math.max(400, duration);
+
 		const fadeSpeed = 150;
 		var notifDiv = this.notif_elem.children[0];
 		notifDiv.id = "notif-" + name;
-		notifDiv.setAttribute("data-notif-text", notificationText[name] || name);
+		const text = notificationText[name] || name;
+		notifDiv.setAttribute("data-notif-text", text);
+
+		// Dynamic duration based on text length (feature 18)
+		const chars = text.length;
+		const words = text.split(" ").length;
+		duration = Math.round(0.7454878 * Math.max(Math.round((1000/17) * chars), Math.round((60000/300) * words)) + 211.653152) + 1;
+		duration = Math.max(400, duration);
+
+		// Notification cache bonus for online play (feature 19)
+		const bonus = playingOnline && duration < 1000 && !cache_notif.includes(name) ? 800 : 0;
+		cache_notif.push(name);
+		duration += bonus;
+
 		fadeIn(this.notif_elem, fadeSpeed);
 		fadeOut(this.notif_elem, fadeSpeed, duration - fadeSpeed);
 		await sleep(duration);
